@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><link rel="stylesheet" href="./account.css"><script src="./backend-config.js" defer></script><script src="./account.js" defer></script><script src="./cloud.js" defer></script>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="一心问道：记录科研日志、代码、灵感与文件的个人知识库。">
+  <meta name="theme-color" content="#176b55"><title>一心问道 · 我的知识库</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%23176b55'/%3E%3Cpath d='M10 20h20' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./assistant.css"><script src="./research-import.js" defer></script><script src="./web-sources.js" defer></script><script src="./assistant.js" defer></script><link rel="stylesheet" href="./literature.css"><script src="./literature.js" defer></script><script src="./app.js" defer></script><script src="./vendor/jszip.min.js" defer></script><script src="./media.js" defer></script>
+  <link rel="stylesheet" href="./atmosphere.css"><script src="./atmosphere.js" defer></script><link rel="stylesheet" href="./video-background.css"><script src="./video-background.js" defer></script>
+<meta name="robots" content="noindex,nofollow">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">一</span><strong>一心问道</strong></a>
+    <div class="workspace"><span class="avatar">我</span><div><strong>我的空间</strong><small>给想法一个归处</small></div><span class="workspace-icon">⌄</span></div>
+    <nav aria-label="知识库导航">
+      <a class="nav-item" href="./chat.html" style="text-decoration:none"><span aria-hidden="true">🥟</span>和肉包聊聊<span class="ai-label">AI</span></a>
+      <button class="nav-item assistant-entry" id="assistant-open"><span data-icon="spark"></span>科研助手<span class="ai-label">AI</span></button>
+      <button class="nav-item" id="literature-open"><span data-icon="note"></span>文献与播报</button>
+      <button class="nav-item active" data-nav="all"><span data-icon="grid"></span>全部内容<span class="count" id="all-count">0</span></button>
+      <button class="nav-item" data-nav="starred"><span data-icon="star"></span>我的收藏<span class="count" id="star-count">0</span></button>
+      <div class="nav-heading">我的分类<button class="icon-btn" id="add-folder" title="添加分类" aria-label="添加分类">+</button></div>
+      <div id="folders"></div>
+      <div class="nav-heading">文件类型</div>
+      <button class="nav-item" data-nav="type:note"><span data-icon="note"></span>笔记与想法</button>
+      <button class="nav-item" data-nav="type:code"><span data-icon="code"></span>代码片段</button>
+      <button class="nav-item" data-nav="type:file"><span data-icon="file"></span>附件与媒体</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="nav-item" id="backup"><span data-icon="download"></span>导出备份</button>
+      <button class="nav-item" id="restore"><span data-icon="restore"></span>恢复备份</button>
+      <div class="local-info"><span class="local-dot"></span><div><strong>私人云端资料库</strong><small id="storage-size">正在读取资料…</small></div><span data-icon="shield"></span></div>
+    </div>
+  </aside>
+  <div class="main-shell">
+    <header class="topbar"><button id="menu-toggle" class="icon-btn mobile-only" aria-label="打开侧栏"><span data-icon="menu"></span></button><div class="breadcrumb">我的空间 <span>/</span> <strong id="breadcrumb-title">全部内容</strong></div><div class="top-right"><span class="private-label"><span data-icon="lock"></span>仅本人可见</span><span class="avatar small">我</span></div></header>
+    <section id="assistant-panel" class="assistant-panel" aria-label="科研助手" hidden>
+      <div class="page-heading"><div><div class="eyebrow">RESEARCH COMPANION</div><h1>科研助手<span class="title-dot">.</span></h1><p>从过去的积累，找到现在值得做的一步。</p></div><div class="heading-actions"><button class="button secondary" id="ai-settings-open">模型连接</button><button class="button primary" id="ai-analyze-open"><span data-icon="spark"></span>更新 AI 分析</button></div></div>
+      <div class="assistant-status"><span id="ai-connection-status">云端模型未连接</span><span id="ai-analysis-date"></span></div>
+      <section class="research-brief"><div class="brief-kicker"><span data-icon="spark"></span><span id="ai-brief-label">历史日志分析</span></div><h2 id="ai-summary">正在读取你的研究记录…</h2><p id="ai-scope"></p><div id="ai-stale" class="assistant-notice" hidden></div></section>
+      <div class="assistant-columns"><div><div class="section-heading"><h2>建议从这里开始</h2><span>优先级来自日志与当前目标</span></div><div id="ai-suggestions"></div><div class="section-heading"><h2>研究主线</h2><span>让分散的想法连起来</span></div><div id="ai-themes" class="theme-list"></div><div id="ai-questions"></div></div>
+      <aside class="today-panel"><div class="section-heading"><h2>今日计划</h2><span id="ai-plan-count">0 项</span></div><p class="panel-caption">从建议中选出今天要推进的事。</p><div id="ai-plan"></div><button id="ai-plan-note" class="button secondary plan-export">保存计划为笔记</button><details class="plan-history"><summary>已完成 / 暂缓</summary><div id="ai-plan-history"></div></details><div class="assistant-how"><strong>每一步，都有来处</strong><p>建议附带原文依据。是否已完成、截止时间和实验结果，以你的最新记录为准。</p><button class="text-button" id="ai-show-library">回到知识库 →</button></div></aside></div>
+    </section>
+    <section id="literature-panel" class="literature-panel" aria-label="文献与播报" hidden></section>
+    <main id="library-main">
+      <div class="page-heading"><div><div class="eyebrow">YOUR PERSONAL LIBRARY</div><h1 id="view-title">全部内容<span class="title-dot">.</span></h1><p id="view-description">笔记、代码与灵感，都在这里慢慢生长。</p></div><div class="heading-actions"><button class="button secondary" id="upload"><span data-icon="upload"></span>导入文件</button><button class="button primary" id="new-note"><span data-icon="plus"></span>新建笔记</button></div></div>
+      <section class="quick-capture" aria-label="快速记录"><div class="capture-symbol"><span data-icon="spark"></span></div><input id="quick-input" aria-label="快速记录一个想法" placeholder="此刻有什么想法？记下来…" maxlength="200"><span class="capture-hint">Enter 快速记录</span><button class="icon-btn" id="quick-add" aria-label="保存这个想法"><span data-icon="arrow"></span></button></section>
+      <div class="library-toolbar"><div class="filters" role="group" aria-label="内容筛选"><button class="filter active" data-filter="all">全部<span id="filtered-total"></span></button><button class="filter" data-filter="note">笔记</button><button class="filter" data-filter="code">代码</button><button class="filter" data-filter="file">文件</button></div><div class="search-wrap"><span data-icon="search"></span><input id="search" type="search" placeholder="搜索标题、正文、标签" aria-label="搜索资料"><kbd>Ctrl K</kbd></div></div>
+      <div class="list-toolbar"><span id="result-count" aria-live="polite">正在打开知识库…</span><div><select id="sort" aria-label="排序"><option value="updated">最近更新</option><option value="created">最近创建</option><option value="title">标题排序</option></select><div class="view-switch"><button class="icon-btn active" id="grid-view" aria-label="卡片视图" aria-pressed="true"><span data-icon="grid"></span></button><button class="icon-btn" id="list-view" aria-label="列表视图" aria-pressed="false"><span data-icon="list"></span></button></div></div></div>
+      <section id="cards" class="cards" aria-label="资料列表"></section>
+      <button class="button secondary" id="paste-media" type="button">从剪贴板粘贴</button><p class="panel-caption">打开笔记后粘贴会作为附件保存。浏览器若只收到文件路径，请拖入原文件。</p><button id="drop-zone" class="drop-zone"><span data-icon="upload"></span><strong>Ctrl+V 粘贴文件，也可以拖到这里</strong><span>截图、图片、视频、PPT / PPTX、PDF 等 · 自动生成预览 · 每个文件 ≤50 MB</span></button>
+      <footer><span>每一个小想法，都值得被留下。</span><span>一心问道 <span class="version">MVP 0.5</span></span></footer>
+    </main>
+  </div>
+</div>
+<input type="file" id="file-input" multiple hidden><input type="file" id="backup-input" accept=".json,application/json" hidden>
+<dialog id="editor" class="editor-dialog" aria-label="编辑资料">
+  <div class="editor-top"><div class="editor-breadcrumb"><span data-icon="note"></span><span>我的知识库</span><span>/</span><span id="editor-kind-label">笔记</span></div><div><span id="save-status" role="status">已保存</span><button class="icon-btn" id="editor-star" aria-label="收藏资料"><span data-icon="star"></span></button><button class="icon-btn" id="editor-close" aria-label="关闭编辑器"><span data-icon="close"></span></button></div></div>
+  <div class="editor-meta"><input id="note-title" aria-label="笔记标题" placeholder="无标题笔记" maxlength="180"><div class="metadata-row"><label>分类<select id="note-folder"></select></label><label>类型<select id="note-kind"><option value="note">笔记</option><option value="idea">想法</option><option value="code">代码</option><option value="file">文件</option></select></label><label class="tag-field">标签<input id="note-tags" placeholder="用逗号分隔，如 学习, 项目" maxlength="200"></label></div></div>
+  <div id="file-preview" class="file-preview" hidden></div>
+  <div class="editor-tools"><div><button data-format="heading" title="插入标题">H₂</button><button data-format="bold" title="加粗"><b>B</b></button><button data-format="list" title="插入列表">☷</button><button data-format="code" title="插入代码块"><span data-icon="code"></span></button><button id="attach" title="添加附件" aria-label="添加附件"><span data-icon="clip"></span></button></div><div class="editor-tabs"><button id="write-tab" class="active">编辑</button><button id="preview-tab">预览</button></div></div>
+  <div class="writing-area"><textarea id="note-body" aria-label="Markdown 正文" spellcheck="false" placeholder="从一个想法开始…&#10;&#10;支持 Markdown 标题、列表、链接和代码块。"></textarea><article id="markdown-preview" class="markdown" hidden></article></div>
+  <div id="attachments" class="attachments"></div>
+  <div class="editor-footer"><span id="word-count">0 字</span><div><button class="text-button danger" id="delete-note">删除</button><button class="text-button" id="export-note">导出 Markdown</button><button class="button primary" id="done">完成</button></div></div>
+</dialog>
+<dialog id="small-dialog" class="small-dialog"><form method="dialog" id="small-form"><h2 id="small-title"></h2><p id="small-message"></p><input id="small-input" aria-label="分类名称" maxlength="40"><div class="dialog-actions"><button value="cancel" class="button secondary">取消</button><button id="small-confirm" value="ok" class="button primary">确定</button></div></form></dialog>
+<dialog id="ai-settings" class="ai-dialog" aria-labelledby="ai-settings-title"><div class="ai-dialog-heading"><h2 id="ai-settings-title">连接云端 AI</h2><button class="icon-btn" data-ai-close="ai-settings" aria-label="关闭模型设置">×</button></div><p id="ai-managed-connection" class="assistant-notice" hidden><strong>DeepSeek V4.1 Flash 已连接</strong><br>科研助手、文献分析与肉包共用服务端保存的 API 密钥。刷新页面、重新登录或换设备后仍可使用，无需再次填写。只在点击分析时发送你选中的资料。</p><p id="ai-connection-help" class="panel-caption">只在点击分析后发送你选中的日志片段或文献文字。线上密钥经过加密，存于本浏览器的 HttpOnly 会话 Cookie，最长 8 小时；不会写入网页文件或备份。</p><div id="ai-server-help" class="assistant-notice" hidden>AI 服务暂不可用，请刷新或稍后重试；现有笔记与分析会保留。</div><form id="ai-settings-form"><label>接口地址<input id="ai-base-url" type="url" required value="https://api.openai.com/v1" autocomplete="off"></label><label>模型名称<input id="ai-model" required value="gpt-5-mini" maxlength="100" autocomplete="off"></label><label>API 密钥<input id="ai-key" type="password" required placeholder="仅用于你的加密会话，不写入网站文件" autocomplete="off" maxlength="1000"></label><p class="panel-caption">支持 Chat Completions 和 JSON 输出的兼容接口。更换服务商时，填写其官方接口地址与模型名称。</p><p id="ai-settings-message" class="ai-error" role="status"></p><div class="dialog-actions"><button class="text-button danger" id="ai-disconnect" type="button">清除连接</button><button class="button primary" id="ai-settings-save" type="submit">保存本次连接</button></div></form></dialog>
+<dialog id="ai-review" class="ai-dialog review-dialog" aria-labelledby="ai-review-title"><div class="ai-dialog-heading"><h2 id="ai-review-title">这次想推进什么？</h2><button class="icon-btn" data-ai-close="ai-review" aria-label="关闭分析窗口">×</button></div><label class="ai-question-label">目标与时间<textarea id="ai-question" maxlength="1500" rows="3">结合最近的研究进展，帮我选出今天最值得推进的三件事，并给出具体的第一步。</textarea></label><div class="review-controls"><label>资料范围<select id="ai-range"><option value="30">最近 30 天</option><option value="90">最近 90 天</option><option value="all">全部历史</option></select></label><button class="button secondary" id="ai-retrieve">按问题挑选日志</button></div><div class="web-search-controls"><label><input type="checkbox" id="ai-web-search"> 联网检索公开文献</label><input id="ai-search-query" maxlength="200" placeholder="联网搜索词，例如 vision language action" aria-label="联网搜索词" hidden><p class="panel-caption">开启后仅向 Crossref 发送搜索词，检索题录与可用摘要；所选日志仅发送给模型。</p></div><p class="panel-caption" id="ai-review-info"></p><div id="ai-source-picker"></div><p class="panel-caption" id="ai-send-target"></p><button type="button" class="button secondary" id="ai-recheck" hidden>重新检查连接</button><details class="review-plan"><summary>同时发送的任务状态</summary><pre id="ai-plan-context"></pre></details><p id="ai-review-error" class="ai-error" role="status"></p><div class="dialog-actions"><span id="ai-run-status" role="status"></span><button class="button secondary" id="ai-cancel" hidden>停止等待</button><button class="button primary" id="ai-run">发送所选片段并分析</button></div></dialog>
+<div id="toast" class="toast" role="status" hidden></div><div id="drag-overlay" hidden><span data-icon="upload"></span><h2>松开鼠标，收进知识库</h2></div>
+</body></html>
+

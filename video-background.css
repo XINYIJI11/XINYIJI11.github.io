@@ -1,0 +1,6 @@
+body.has-video-wallpaper{isolation:isolate;background:#192a36}
+body.has-video-wallpaper #wallpaper{position:fixed;inset:0;z-index:-3;pointer-events:none;background-image:url('./assets/night-poster.jpg');background-size:cover;background-position:center;opacity:var(--wallpaper-alpha,.82);overflow:hidden}
+#wallpaper-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
+body.has-video-wallpaper .chat-app{position:relative}
+#wallpaper-play-toggle{font-size:13px}
+@media(max-width:600px){#wallpaper-play-toggle{padding:7px;font-size:12px}}
