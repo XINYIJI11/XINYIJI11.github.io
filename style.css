@@ -17,3 +17,9 @@
 #attachments{max-height:38vh;flex-shrink:0;font-size:14px}#attachments:empty{display:none}.card-cover img.document-thumbnail{object-fit:contain;background:#edf4f3}.media-attachment .file-download strong{font-size:14px}@media(max-width:600px){#attachments{padding:0 14px;max-height:34vh}}
 
 .editor-tools,.editor-tools>div{flex-wrap:wrap}.editor-tools input[type=color]{width:26px;height:24px;padding:1px;vertical-align:middle}.markdown mark{background:#ffe78b;color:#292311}
+
+.writing-area.live-writing{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1fr);overflow:hidden}
+.live-writing #note-body,.live-writing #markdown-preview{box-sizing:border-box;min-height:0;min-width:0;overflow:auto;padding:16px}
+.live-writing #markdown-preview{border-left:1px solid #cbd9cf}
+.live-writing #markdown-preview:before{content:"实时预览";display:block;color:#617769;font:600 12px/1.5 sans-serif;margin-bottom:8px}
+@media(max-width:700px){.writing-area.live-writing{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr))}.live-writing #markdown-preview{border-left:0;border-top:1px solid #cbd9cf}}
