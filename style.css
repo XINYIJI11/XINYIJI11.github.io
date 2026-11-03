@@ -25,3 +25,6 @@
 @media(max-width:700px){.writing-area.live-writing{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr))}.live-writing #markdown-preview{border-left:0;border-top:1px solid #cbd9cf}}
 
 #rich-note{box-sizing:border-box;width:100%;overflow:auto;outline:none;padding:24px;white-space:pre-wrap;overflow-wrap:anywhere;font:16px/1.85 inherit;font-family:inherit;line-height:1.85}#rich-note mark{background:#ffe78b;color:inherit}#rich-note:empty:before{content:"从一个想法开始…";color:#78897f;pointer-events:none}
+
+#rich-note,#rich-note *{caret-color:#203a36;cursor:url("./assets/nailong-cursor.svg") 1 1,text}
+@media(forced-colors:active){#rich-note,#rich-note *{caret-color:CanvasText;cursor:text}}
