@@ -28,3 +28,5 @@
 
 #rich-note,#rich-note *{caret-color:#203a36;cursor:url("./assets/nailong-cursor.svg") 1 1,text}
 @media(forced-colors:active){#rich-note,#rich-note *{caret-color:CanvasText;cursor:text}}
+
+#markdown-preview :is(p,li,blockquote,h1,h2,h3){white-space:pre-wrap;tab-size:4}#markdown-preview .note-line{margin:0;min-height:1lh}#rich-note{white-space:pre-wrap;tab-size:4}
