@@ -30,3 +30,6 @@
 @media(forced-colors:active){#rich-note,#rich-note *{caret-color:CanvasText;cursor:text}}
 
 #markdown-preview :is(p,li,blockquote,h1,h2,h3){white-space:pre-wrap;tab-size:4}#markdown-preview .note-line{margin:0;min-height:1lh}#rich-note{white-space:pre-wrap;tab-size:4}
+
+.note-safety{position:fixed;bottom:8px;right:12px;z-index:500;display:flex;gap:6px}.note-safety button{background:#fff8e4;color:#24493f;border:1px solid #688477;border-radius:8px;padding:6px;font-size:12px}
+

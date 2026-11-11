@@ -9,7 +9,7 @@ window.Account=(()=>{
     // Cross-origin Pages requests use our bearer token, never third-party cookies.
     const response=await nativeFetch(base+path,{...options,headers,credentials:new URL(base).origin===location.origin?'same-origin':'omit',redirect:'manual'});
     if(response.type==='opaqueredirect'||response.status===0||response.status>=300&&response.status<400)throw Error('网站外层登录已过期，请刷新页面并完成网站登录，再使用 ZS 登录。');
-    if(path.startsWith('/api/')&&!/^application\/json(?:\s*;|$)/i.test(response.headers.get('content-type')||''))throw Error('登录网关或服务器返回了网页，未能连接 API。请刷新并完成外层登录后重试；这不代表密码错误。');
+    if(path.startsWith('/api/')&&!(path.startsWith('/api/storage/blob?')&&(options.method||'GET')==='GET'&&response.ok&&!/text\/html/i.test(response.headers.get('content-type')||''))&&!/^application\/json(?:\s*;|$)/i.test(response.headers.get('content-type')||''))throw Error('登录网关或服务器返回了网页，未能连接 API。请刷新并完成外层登录后重试；这不代表密码错误。');
     if(response.status===401&&!path.startsWith('/api/auth/'))showLogin('登录已过期，请重新登录；未同步的内容仍保留在本机。');
     return response;
   }
@@ -49,3 +49,4 @@ window.Account=(()=>{
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
   return{ready,request,loadScript,async loadSeeds(){for(const name of ['research-manifest.js','assistant-brief.js','literature-seed.js','zotero-library.js'])await loadScript(name);}};
 })();
+

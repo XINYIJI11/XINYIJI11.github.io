@@ -69,7 +69,7 @@ window.Cloud=(()=>{
           const same=response.current&&response.current.deleted===item.deleted&&JSON.stringify(response.current.value)===JSON.stringify(item.value);
           if(same){await acknowledge(item,response.current.revision);continue;}
           if(!response.current)throw Error(response.error);
-          conflict={item,current:response.current};throw Error('发现多设备版本冲突，点击此处选择版本。');
+          conflict={item,current:response.current};showConflict();throw Error('发现多设备版本冲突，点击此处选择版本。');
         }
         await acknowledge(item,response.revision||1);
       }
@@ -80,7 +80,7 @@ window.Cloud=(()=>{
     busy=(navigator.locks?navigator.locks.request('yixin-cloud-upload',drain):drain());
     try{await busy;}catch(e){status((e.message==='Failed to fetch'?'网络暂不可用；修改已保留在本机，联网后会重试。':e.message),true);throw e;}finally{busy=false;}
   }
-  function schedule(){if(!enabled)return;status('修改已保存在本机 · 等待上传');clearTimeout(timer);timer=setTimeout(()=>flush().catch(()=>{if(!conflict)timer=setTimeout(schedule,15000);}),700);}
+  function schedule(){if(!enabled)return;if(conflict){status('云端未保存：存在版本冲突 · 点击处理',true);return;}status('修改已保存在本机 · 等待上传');clearTimeout(timer);timer=setTimeout(()=>flush().catch(()=>{if(!conflict)timer=setTimeout(schedule,15000);}),700);}
   async function blob(id){const cached=await get('blobs',id);if(cached)return cached.blob;const response=await Account.request('/api/storage/blob?id='+encodeURIComponent(id));if(!response.ok)throw Error('附件暂时无法下载，请联网后重试。');const value=await response.blob();await local(['blobs'],tx=>tx.objectStore('blobs').put({id,blob:value}));return value;}
   function showConflict(){
     if(!conflict)return;let dialog=document.getElementById('cloud-conflict');if(dialog)dialog.remove();dialog=document.createElement('dialog');dialog.id='cloud-conflict';
@@ -102,3 +102,4 @@ window.Cloud=(()=>{
   }
   return{init,wrap,schedule,flush,blob,get enabled(){return enabled;}};
 })();
+
